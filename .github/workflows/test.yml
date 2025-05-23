@@ -1,0 +1,110 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        architecture: ["x64"]
+
+        include:
+          - os: macos-13
+            python-version: "3.10"
+            architecture: "x64"
+
+          - os: windows-latest
+            python-version: "3.10"
+            architecture: "x64"
+
+          - os: windows-latest
+            python-version: "3.10"
+            architecture: "x86"
+
+    steps:
+      - name: Install Linux system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libdmtx0t64
+
+      - name: Install macOS system dependencies
+        if: runner.os == 'macOS'
+        run: |
+          brew install libdmtx gettext
+          brew link gettext --force
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }} (${{ matrix.architecture }})
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+          cache: "pip"
+        env:
+          DYLD_LIBRARY_PATH: /usr/local/opt/gettext/lib
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+          # If OpenCV is needed as a Python package, install it via pip:
+          # pip install opencv-python
+
+      - name: Download 32-bit DLLs (Windows x86)
+        if: runner.os == 'Windows' && matrix.architecture == 'x86'
+        shell: bash
+        run: |
+          echo "Downloading 32-bit DLLs into pydmtx/ directory..."
+          mkdir -p pydmtx # Ensure the target directory exists
+          cd pydmtx
+          curl --location --output libdmtx-32.dll "https://github.com/NaturalHistoryMuseum/barcode-reader-dlls/releases/download/0.1/libdmtx-32.dll"
+          echo "libdmtx-32.dll downloaded into $(pwd)"
+          cd .. # Return to the repository root
+
+      - name: Download 64-bit DLLs (Windows x64)
+        if: runner.os == 'Windows' && matrix.architecture == 'x64'
+        shell: bash
+        run: |
+          echo "Downloading 64-bit DLLs into pydmtx/ directory..."
+          mkdir -p pydmtx # Ensure the target directory exists
+          cd pydmtx
+          curl --location --output libdmtx-64.dll "https://github.com/NaturalHistoryMuseum/barcode-reader-dlls/releases/download/0.1/libdmtx-64.dll"
+          echo "libdmtx-64.dll downloaded into $(pwd)"
+          cd .. # Return to the repository root
+
+      - name: Log platform, machine, and Python version
+        run: |
+          python -c "import platform, sys; \
+          print('Platform:', platform.platform()); \
+          print('Machine:', platform.machine()); \
+          print('Python version:', sys.version)"
+
+      - name: Run tests (pytest)
+        run: pytest --verbose --cov=pydmtx pydmtx
+
+      - name: Upload coverage to Coveralls
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10' && matrix.architecture == 'x64'
+        run: |
+          pip install coveralls>=3.2.0
+          coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,8 @@
+# Dependencies required to run tests
+# TODO How to specify OpenCV? 'cv2>=2.4.8'
+coveralls>=1.1          # Upload code coverage reports to Coveralls service
+imageio>=2.3.0          # Image input/output library for test images
+numpy>=1.8.2            # Numerical operations and array handling for tests
+Pillow>=3.2.0           # Image processing library used in tests and scripts
+pytest                  # Testing framework for running test suites
+pytest-cov              # Plugin for measuring code coverage with pytest

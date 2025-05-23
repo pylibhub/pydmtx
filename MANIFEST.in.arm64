@@ -1,0 +1,2 @@
+include pydmtx/libdmtx-arm64.dll
+include pydmtx/libdmtx-LICENSE.txt
