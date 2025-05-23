@@ -21,7 +21,7 @@ def readme():
 
 
 setup_data = {
-    "name": "pydmtx",
+    "name": "pydmtxlib",
     "version": pydmtx.__version__,
     "author": "pylibhub",
     "author_email": "pylibhub@gmail.com",
