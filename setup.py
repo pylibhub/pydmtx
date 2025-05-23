@@ -14,7 +14,7 @@ URL = "https://github.com/pylibhub/pydmtx"
 def readme():
     """Return the contents of the README file."""
     try:
-        with open("README.rst", encoding="utf-8") as f:
+        with open("README.md", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return f"Visit {URL} for more details."
