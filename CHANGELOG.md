@@ -1,3 +1,7 @@
+### v0.1.14
+
+* rename README.rst to README.md and update references accordingly
+
 ### v0.1.13
 
 * Dropped support for legacy Python versions; minimum supported version is now 3.8
