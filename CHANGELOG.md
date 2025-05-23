@@ -1,3 +1,7 @@
+### v0.1.15
+
+* Update the docstring in the version file.
+
 ### v0.1.14
 
 * rename README.rst to README.md and update references accordingly
