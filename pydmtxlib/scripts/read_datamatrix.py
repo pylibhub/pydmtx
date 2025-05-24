@@ -4,21 +4,18 @@ from __future__ import print_function
 import argparse
 import sys
 
-import pydmtx
-from pydmtx.pydmtx import decode
+import pydmtxlib
+from pydmtxlib.pydmtxlib import decode
 
 
 def main(args=None):
     if args is None:
         args = sys.argv[1:]
- 
-    parser = argparse.ArgumentParser(
-        description='Reads datamatrix barcodes in images'
-    )
-    parser.add_argument('image', nargs='+')
+
+    parser = argparse.ArgumentParser(description="Reads datamatrix barcodes in images")
+    parser.add_argument("image", nargs="+")
     parser.add_argument(
-        '-v', '--version', action='version',
-        version='%(prog)s ' + pydmtx.__version__
+        "-v", "--version", action="version", version="%(prog)s " + pydmtxlib.__version__
     )
     args = parser.parse_args(args)
 
@@ -29,5 +26,5 @@ def main(args=None):
             print(barcode.data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

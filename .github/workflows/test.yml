@@ -73,9 +73,9 @@ jobs:
         if: runner.os == 'Windows' && matrix.architecture == 'x86'
         shell: bash
         run: |
-          echo "Downloading 32-bit DLLs into pydmtx/ directory..."
-          mkdir -p pydmtx # Ensure the target directory exists
-          cd pydmtx
+          echo "Downloading 32-bit DLLs into pydmtxlib/ directory..."
+          mkdir -p pydmtxlib # Ensure the target directory exists
+          cd pydmtxlib
           curl --location --output libdmtx-32.dll "https://github.com/NaturalHistoryMuseum/barcode-reader-dlls/releases/download/0.1/libdmtx-32.dll"
           echo "libdmtx-32.dll downloaded into $(pwd)"
           cd .. # Return to the repository root
@@ -84,9 +84,9 @@ jobs:
         if: runner.os == 'Windows' && matrix.architecture == 'x64'
         shell: bash
         run: |
-          echo "Downloading 64-bit DLLs into pydmtx/ directory..."
-          mkdir -p pydmtx # Ensure the target directory exists
-          cd pydmtx
+          echo "Downloading 64-bit DLLs into pydmtxlib/ directory..."
+          mkdir -p pydmtxlib # Ensure the target directory exists
+          cd pydmtxlib
           curl --location --output libdmtx-64.dll "https://github.com/NaturalHistoryMuseum/barcode-reader-dlls/releases/download/0.1/libdmtx-64.dll"
           echo "libdmtx-64.dll downloaded into $(pwd)"
           cd .. # Return to the repository root
@@ -99,7 +99,7 @@ jobs:
           print('Python version:', sys.version)"
 
       - name: Run tests (pytest)
-        run: pytest --verbose --cov=pydmtx pydmtx
+        run: pytest --verbose --cov=pydmtxlib pydmtxlib
 
       - name: Upload coverage to Coveralls
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10' && matrix.architecture == 'x64'

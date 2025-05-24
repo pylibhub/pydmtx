@@ -16,8 +16,15 @@ try:
 except ImportError:
     imageio = None
 
-from pydmtx.pydmtx import EXTERNAL_DEPENDENCIES, Decoded, Encoded, Rect, decode, encode
-from pydmtx.pydmtx_error import PydmtxError
+from pydmtxlib.pydmtxlib import (
+    EXTERNAL_DEPENDENCIES,
+    Decoded,
+    Encoded,
+    Rect,
+    decode,
+    encode,
+)
+from pydmtxlib.pydmtxlib_error import PydmtxlibError
 
 TESTDATA = Path(__file__).parent
 
@@ -82,17 +89,17 @@ class TestDecode(unittest.TestCase):
         self.assertEqual(1, len(EXTERNAL_DEPENDENCIES))
         self.assertIn("libdmtx", EXTERNAL_DEPENDENCIES[0]._name)
 
-    @patch("pydmtx.pydmtx.dmtxImageCreate")
+    @patch("pydmtxlib.pydmtxlib.dmtxImageCreate")
     def test_dmtxImageCreate_failed(self, dmtxImageCreate):
         dmtxImageCreate.return_value = None
-        with self.assertRaisesRegex(PydmtxError, "Could not create image"):
+        with self.assertRaisesRegex(PydmtxlibError, "Could not create image"):
             decode(self.datamatrix)
         self.assertEqual(1, dmtxImageCreate.call_count)
 
-    @patch("pydmtx.pydmtx.dmtxDecodeCreate")
+    @patch("pydmtxlib.pydmtxlib.dmtxDecodeCreate")
     def test_dmtxDecodeCreate_failed(self, dmtxDecodeCreate):
         dmtxDecodeCreate.return_value = None
-        with self.assertRaisesRegex(PydmtxError, "Could not create decoder"):
+        with self.assertRaisesRegex(PydmtxlibError, "Could not create decoder"):
             decode(self.datamatrix)
         self.assertEqual(1, dmtxDecodeCreate.call_count)
 
@@ -100,7 +107,7 @@ class TestDecode(unittest.TestCase):
         # 40 bits-per-pixel
         data = (list(range(3 * 3 * 5)), 3, 3)
         with self.assertRaisesRegex(
-            PydmtxError,
+            PydmtxlibError,
             r"Unsupported bits-per-pixel: \[40\]\. Should be one of \[8, 16, 24, 32\]",
         ):
             decode(data)
@@ -109,7 +116,7 @@ class TestDecode(unittest.TestCase):
         # Image data has ten bytes. width x height indicates nine bytes
         data = (list(range(10)), 3, 3)
         with self.assertRaisesRegex(
-            PydmtxError,
+            PydmtxlibError,
             r"Inconsistent dimensions: image data of 10 bytes is not divisible by \(width x height = 9\)",
         ):
             decode(data)
@@ -159,19 +166,19 @@ class TestEncode(unittest.TestCase):
 
     def test_invalid_scheme(self):
         with self.assertRaisesRegex(
-            PydmtxError, r"Invalid scheme \[asdf\]: should be one of \['Ascii"
+            PydmtxlibError, r"Invalid scheme \[asdf\]: should be one of \['Ascii"
         ):
             encode(b" ", scheme="asdf")
 
     def test_invalid_size(self):
         with self.assertRaisesRegex(
-            PydmtxError, r"Invalid size \[9x9\]: should be one of \['RectAuto'"
+            PydmtxlibError, r"Invalid size \[9x9\]: should be one of \['RectAuto'"
         ):
             encode(b" ", size="9x9")
 
     def test_image_not_large_enough(self):
         with self.assertRaisesRegex(
-            PydmtxError,
+            PydmtxlibError,
             "Could not encode data, possibly because the image is not large enough to contain the data",
         ):
             encode(b" " * 50, size="10x10")

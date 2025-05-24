@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from ctypes import byref, cast, string_at
 from functools import partial
 
-from .pydmtx_error import PydmtxError
+from .pydmtxlib_error import PydmtxlibError
 from .wrapper import (
     EXTERNAL_DEPENDENCIES,
     DmtxPackOrder,
@@ -80,11 +80,11 @@ def _image(pixels, width, height, pack):
         DmtxImage: The created image
 
     Raises:
-        PydmtxError: If the image could not be created.
+        PydmtxlibError: If the image could not be created.
     """
     image = dmtxImageCreate(pixels, width, height, pack)
     if not image:
-        raise PydmtxError("Could not create image")
+        raise PydmtxlibError("Could not create image")
     else:
         try:
             yield image
@@ -105,11 +105,11 @@ def _decoder(image, shrink):
         POINTER(DmtxDecode): The created decoder
 
     Raises:
-        PydmtxError: If the decoder could not be created.
+        PydmtxlibError: If the decoder could not be created.
     """
     decoder = dmtxDecodeCreate(image, shrink)
     if not decoder:
-        raise PydmtxError("Could not create decoder")
+        raise PydmtxlibError("Could not create decoder")
     else:
         try:
             yield decoder
@@ -238,7 +238,7 @@ def _pixel_data(image):
 
         # Check dimensions
         if 0 != len(pixels) % (width * height):
-            raise PydmtxError(
+            raise PydmtxlibError(
                 f"Inconsistent dimensions: image data of {len(pixels)} bytes is not "
                 f"divisible by (width x height = {width * height})"
             )
@@ -246,7 +246,7 @@ def _pixel_data(image):
     # Compute bits-per-pixel
     bpp = 8 * len(pixels) // (width * height)
     if bpp not in _PACK_ORDER:
-        raise PydmtxError(
+        raise PydmtxlibError(
             f"Unsupported bits-per-pixel: [{bpp}]. Should be one of {sorted(_PACK_ORDER.keys())}"
         )
     return pixels, width, height, bpp
@@ -340,7 +340,7 @@ def decode(
 def _encoder():
     encoder = dmtxEncodeCreate()
     if not encoder:
-        raise PydmtxError("Could not create encoder")
+        raise PydmtxlibError("Could not create encoder")
 
     try:
         yield encoder
@@ -372,7 +372,7 @@ def encode(data, scheme=None, size=None):
     size = size if size else "ShapeAuto"
     size_name = f"{ENCODING_SIZE_PREFIX}{size}"
     if not hasattr(DmtxSymbolSize, size_name):
-        raise PydmtxError(
+        raise PydmtxlibError(
             f"Invalid size [{size}]: should be one of {ENCODING_SIZE_NAMES}"
         )
     size = getattr(DmtxSymbolSize, size_name)
@@ -380,7 +380,7 @@ def encode(data, scheme=None, size=None):
     scheme = scheme if scheme else "Ascii"
     scheme_name = "{0}{1}".format(ENCODING_SCHEME_PREFIX, scheme.capitalize())
     if not hasattr(DmtxScheme, scheme_name):
-        raise PydmtxError(
+        raise PydmtxlibError(
             f"Invalid scheme [{scheme}]: should be one of {ENCODING_SCHEME_NAMES}"
         )
     scheme = getattr(DmtxScheme, scheme_name)
@@ -390,7 +390,7 @@ def encode(data, scheme=None, size=None):
         dmtxEncodeSetProp(encoder, DmtxProperty.DmtxPropSizeRequest, size)
 
         if dmtxEncodeDataMatrix(encoder, len(data), cast(data, c_ubyte_p)) == 0:
-            raise PydmtxError(
+            raise PydmtxlibError(
                 "Could not encode data, possibly because the image is not "
                 "large enough to contain the data"
             )

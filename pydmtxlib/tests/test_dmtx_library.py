@@ -3,19 +3,19 @@ import unittest
 from pathlib import Path
 from unittest.mock import call, patch
 
-from pydmtx import dmtx_library
+from pydmtxlib import dmtx_library
 
 
 class TestLoad(unittest.TestCase):
     def setUp(self):
         self.addCleanup(patch.stopall)
-        self.cdll = patch("pydmtx.dmtx_library.cdll", autospec=True).start()
+        self.cdll = patch("pydmtxlib.dmtx_library.cdll", autospec=True).start()
         self.find_library = patch(
-            "pydmtx.dmtx_library.find_library", autospec=True
+            "pydmtxlib.dmtx_library.find_library", autospec=True
         ).start()
-        self.platform = patch("pydmtx.dmtx_library.platform", autospec=True).start()
+        self.platform = patch("pydmtxlib.dmtx_library.platform", autospec=True).start()
         self.windows_fname = patch(
-            "pydmtx.dmtx_library._windows_fname",
+            "pydmtxlib.dmtx_library._windows_fname",
             autospec=True,
             return_value="dll fname",
         ).start()
@@ -99,9 +99,9 @@ class TestLoad(unittest.TestCase):
 class TestWindowsFname(unittest.TestCase):
     def setUp(self):
         self.addCleanup(patch.stopall)
-        self.mock_sys = patch("pydmtx.dmtx_library.sys", autospec=True).start()
+        self.mock_sys = patch("pydmtxlib.dmtx_library.sys", autospec=True).start()
         self.mock_platform = patch(
-            "pydmtx.dmtx_library.platform", autospec=True
+            "pydmtxlib.dmtx_library.platform", autospec=True
         ).start()
 
     def test_32bit(self):

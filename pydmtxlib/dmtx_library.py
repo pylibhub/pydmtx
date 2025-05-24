@@ -26,7 +26,7 @@ def load():
     """Loads the libdmtx shared library."""
     if "Windows" == platform.system():
         # Possible scenarios here
-        #   1. Run from source, DLLs are in pydmtx directory
+        #   1. Run from source, DLLs are in pydmtxlib directory
         #       cdll.LoadLibrary() imports DLLs in repo root directory
         #   2. Wheel install into CPython installation
         #       cdll.LoadLibrary() imports DLLs in package directory

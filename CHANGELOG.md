@@ -1,3 +1,7 @@
+### v0.2.0
+
+* Rename the library from pydmtx to pydmtxlib.
+
 ### v0.1.15
 
 * Update the docstring in the version file.

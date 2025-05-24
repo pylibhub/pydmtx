@@ -11,8 +11,8 @@ try:
 except ImportError:
     from io import StringIO
 
-from pydmtx.scripts.read_datamatrix import main as main_read
-from pydmtx.scripts.write_datamatrix import main as main_write
+from pydmtxlib.scripts.read_datamatrix import main as main_read
+from pydmtxlib.scripts.write_datamatrix import main as main_write
 
 
 @contextmanager
@@ -28,7 +28,7 @@ class TestReadWriteDatamatrix(unittest.TestCase):
     def test_read_datamatrix(self):
         "Read datamatrix barcodes"
         with capture_stdout() as stdout:
-            main_read([str(Path(__file__).parent.joinpath('datamatrix.png'))])
+            main_read([str(Path(__file__).parent.joinpath("datamatrix.png"))])
 
         if 2 == sys.version_info[0]:
             expected = "Stegosaurus\nPlesiosaurus"
@@ -38,20 +38,18 @@ class TestReadWriteDatamatrix(unittest.TestCase):
         self.assertEqual(expected, stdout.getvalue().strip())
 
     def test_write_datamatrix(self):
-        tmpfile = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+        tmpfile = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
         tmpfile.close()
         try:
-            main_write(['--size', '44x44', tmpfile.name, 'Stegosaurus'])
+            main_write(["--size", "44x44", tmpfile.name, "Stegosaurus"])
             with capture_stdout() as stdout:
                 main_read([tmpfile.name])
 
-            expected = (
-                "Stegosaurus" if 2 == sys.version_info[0] else "b'Stegosaurus'"
-            )
+            expected = "Stegosaurus" if 2 == sys.version_info[0] else "b'Stegosaurus'"
             self.assertEqual(expected, stdout.getvalue().strip())
         finally:
             os.unlink(tmpfile.name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

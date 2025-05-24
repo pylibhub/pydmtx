@@ -1,1 +1,1 @@
-include pydmtx/tests/*.png
+include pydmtxlib/tests/*.png

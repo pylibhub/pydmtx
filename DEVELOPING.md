@@ -11,8 +11,8 @@ pip install -r requirements.txt
 Run tests and coverage:
 
 ```bash
-python -m pytest --verbose --cov=pydmtx --cov-report=term-missing --cov-report=html pydmtx
-python -m pydmtx.scripts.read_datamatrix pydmtx/tests/datamatrix.png
+python -m pytest --verbose --cov=pydmtxlib --cov-report=term-missing --cov-report=html pydmtxlib
+python -m pydmtxlib.scripts.read_datamatrix pydmtxlib/tests/datamatrix.png
 ```
 
 ### Test matrix of supported Python versions 🐍
@@ -34,7 +34,7 @@ tox
 
 ### Windows-specific notes ⚠️
 
-Save the 32-bit and 64-bit `libdmtx.dll` files as `libdmtx-32.dll` and `libdmtx-64.dll` respectively in the `pydmtx` directory.
+Save the 32-bit and 64-bit `libdmtx.dll` files as `libdmtx-32.dll` and `libdmtx-64.dll` respectively in the `pydmtxlib` directory.
 The `_windows_fname` function in `dmtx_library.py` picks the correct DLL.
 This setup ensures the DLLs work when running from source, installed package, or frozen binary.
 
@@ -47,18 +47,18 @@ This setup ensures the DLLs work when running from source, installed package, or
 Create source and wheel builds. The `win32` and `win_amd64` wheels will include the correct `libdmtx.dll`:
 
 ```bash
-rm -rf build dist MANIFEST.in pydmtx.egg-info
+rm -rf build dist MANIFEST.in pydmtxlib.egg-info
 cp MANIFEST.in.all MANIFEST.in
 python setup.py bdist_wheel
 
 cat MANIFEST.in.all MANIFEST.in.win32 > MANIFEST.in
 python setup.py bdist_wheel --plat-name=win32
 
-rm -rf build pydmtx.egg-info
+rm -rf build pydmtxlib.egg-info
 cat MANIFEST.in.all MANIFEST.in.win64 > MANIFEST.in
 python setup.py bdist_wheel --plat-name=win_amd64
 
-rm -rf build MANIFEST.in pydmtx.egg-info
+rm -rf build MANIFEST.in pydmtxlib.egg-info
 ```
 
 2. **Release to TestPyPI**
@@ -71,7 +71,7 @@ twine upload -r testpypi dist/*
 
 3. **Test the release**
 
-* Visit [https://testpypi.python.org/pypi/pydmtx/](https://testpypi.python.org/pypi/pydmtx/)
+* Visit [https://testpypi.python.org/pypi/pydmtxlib/](https://testpypi.python.org/pypi/pydmtxlib/)
 * On Windows:
 
 ```powershell
@@ -94,7 +94,7 @@ pip install Pillow
 * Install your package from TestPyPI:
 
 ```bash
-pip install --index-url https://testpypi.python.org/simple pydmtx
+pip install --index-url https://testpypi.python.org/simple pydmtxlib
 ```
 
 * Run test commands:
@@ -112,8 +112,8 @@ If all tests pass, upload to PyPI:
 twine upload dist/*
 ```
 
-Check [https://pypi.python.org/pypi/pydmtx/](https://pypi.python.org/pypi/pydmtx/) and then install normally:
+Check [https://pypi.python.org/pypi/pydmtxlib/](https://pypi.python.org/pypi/pydmtxlib/) and then install normally:
 
 ```bash
-pip install pydmtx[scripts]
+pip install pydmtxlib[scripts]
 ```

@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 import sys
 
-import pydmtx
+import pydmtxlib
 
 SCRIPTS = ["read_datamatrix", "write_datamatrix"]
 
 # Optional dependency
 PILLOW = "Pillow>=3.2.0"
 
-URL = "https://github.com/pylibhub/pydmtx"
+URL = "https://github.com/pylibhub/pydmtxlib"
 
 
 def readme():
     """Return the contents of the README file."""
     try:
-        with open("README.md", encoding="utf-8") as f:
+        with open("README.rst", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return f"Visit {URL} for more details."
@@ -22,20 +22,20 @@ def readme():
 
 setup_data = {
     "name": "pydmtxlib",
-    "version": pydmtx.__version__,
+    "version": pydmtxlib.__version__,
     "author": "pylibhub",
     "author_email": "pylibhub@gmail.com",
     "url": URL,
     "license": "MIT",
-    "description": pydmtx.__doc__,
+    "description": pydmtxlib.__doc__,
     "long_description": readme(),
     "long_description_content_type": "text/x-rst",
-    "packages": ["pydmtx", "pydmtx.scripts", "pydmtx.tests"],
-    "test_suite": "pydmtx.tests",
-    "scripts": [f"pydmtx/scripts/{script}.py" for script in SCRIPTS],
+    "packages": ["pydmtxlib", "pydmtxlib.scripts", "pydmtxlib.tests"],
+    "test_suite": "pydmtxlib.tests",
+    "scripts": [f"pydmtxlib/scripts/{script}.py" for script in SCRIPTS],
     "entry_points": {
         "console_scripts": [
-            f"{script}=pydmtx.scripts.{script}:main" for script in SCRIPTS
+            f"{script}=pydmtxlib.scripts.{script}:main" for script in SCRIPTS
         ],
     },
     "extras_require": {
