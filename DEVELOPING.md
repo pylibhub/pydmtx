@@ -3,7 +3,7 @@
 Set up your environment:
 
 ```bash
-python -m venv venv
+python -m virtualenv venv
 source ./venv/bin/activate  # On Windows use: .\venv\Scripts\activate
 pip install -r requirements.txt
 ````

@@ -1,9 +1,9 @@
 Pydmtxlib
 =========
 
-*Forked from `pylibdmtx <https://github.com/NaturalHistoryMuseum/pylibdmtx>`_*
+Forked from `pylibdmtx <https://github.com/NaturalHistoryMuseum/pylibdmtx>`_
 
-Read and write Data Matrix barcodes in Python 3.8+ using the
+Read and write Data Matrix in Python 3.8+ using the
 `libdmtx <http://libdmtx.sourceforge.net/>`_ library.
 
 ----
@@ -50,10 +50,3 @@ Notes
 
 - On Windows, if you get import errors, install the Visual C++ Redistributable
 - Supports Python 3.8 and newer
-
-License
--------
-
-This project is licensed under the MIT License. See the `LICENSE <LICENSE>`_ file for details.
-
-The ``libdmtx`` shared library is distributed under its own license. Please refer to the ``libdmtx`` project for its license terms.
