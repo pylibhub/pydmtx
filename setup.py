@@ -43,6 +43,9 @@ setup_data = {
             PILLOW,
         ],
     },
+    "install_requires": [
+        "packaging>=25.0",
+    ],
     "tests_require": [
         # TODO How to specify OpenCV? 'cv2>=2.4.8',
         "numpy>=1.8.2",
