@@ -1,0 +1,7 @@
+# Test dependencies
+-r requirements-test.txt
+
+# Dev/release tools
+tox                    # Automation tool for testing across environments
+twine                  # Uploads Python packages to PyPI
+wheel                  # Build wheels for distribution

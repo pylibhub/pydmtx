@@ -2,8 +2,10 @@
     "cSpell.words": [
         "datamatrix",
         "Dmtx",
+        "imageio",
         "LIBDMTX",
         "libdmtx's",
+        "numpy",
         "pydmtxlib",
         "pylibhub",
         "ulonglong"

@@ -5,7 +5,7 @@ Set up your environment:
 ```bash
 python -m virtualenv venv
 source ./venv/bin/activate  # On Windows use: .\venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ````
 
 Run tests and coverage:

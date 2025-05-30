@@ -1,3 +1,8 @@
+### v0.2.2
+
+* Split dependencies into requirements.txt, requirements-test.txt, and requirements-dev.txt.
+* Added packaging library to handle version parsing and packaging tasks.
+
 ### v0.2.1
 
 * Add direct top-level imports for key functions and classes.
